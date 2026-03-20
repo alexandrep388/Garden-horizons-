@@ -5,7 +5,7 @@ if game.PlaceId ~= 126884695634066 then return end
 local WindUI = loadstring(game:HttpGet("https://github.com/Footagesus/WindUI/releases/latest/download/main.lua"))()
 
 local Window = WindUI:CreateWindow({
-    Title = "Mon Script",
+    Title = "Grow a garden hub",
     Icon = "sprout",
     Author = "by alexandrep388",
     Folder = "Grow a garden",
