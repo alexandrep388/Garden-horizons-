@@ -1381,7 +1381,7 @@ TabSettings:Button({
 -- ══════════════════════════════════════
 -- INIT
 -- ══════════════════════════════════════
-pcall(function() Window:Init() end)
+Window:Init()
 
 task.spawn(function()
     task.wait(0.5)
