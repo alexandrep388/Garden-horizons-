@@ -50,17 +50,15 @@ local Window = WindUI:CreateWindow({
     BackgroundImageTransparency = 0,
 
     KeySystem = {
-        Note = "Get your free key — resets every 24h | GD Studio",
-        API = {
-            {
-                Type      = "junkiedev",
-                ServiceId = "Garden Script - GD Studio",
-                ApiKey    = "238a8d32-4141-484e-949c-70d5516049bb",
-                Provider  = "Grow a garden Script/ checkpoint 1",
-            },
+    Note = "Get your free key — resets every 24h | GD Studio",
+    API = {
+        {
+            Type      = "platoboost",
+            ServiceId = 23028,
+            Secret    = "44124a69a40e19461325418a3",
         },
     },
-})
+},
 Window:Tag({ Title = "v1.1", Icon = "tag", Color = Color3.fromRGB(22, 163, 74), Radius = 4 })
 Window:Tag({ Title = "Grow a Garden", Icon = "sprout", Color = Color3.fromRGB(21, 128, 61), Radius = 4 })
 
