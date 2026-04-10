@@ -124,6 +124,25 @@ local function stopAutoCollect()
 end
 
 -- ═══════════════════════════════
+--  AUTO FARM
+-- ═══════════════════════════════
+local function startAutoFarm()
+    task.spawn(function()
+        while Toggles.AutoFarm.Value do
+            hrp.CFrame = CFrame.new(-112, 5, -67)
+            task.wait(0.3)
+            local target = workspace.Map.Parts.Zones["Zone-1"].Build.Part
+            humanoid:MoveTo(target.Position)
+            task.wait(0.5)
+            hrp.CFrame = CFrame.new(-116, 19, -1263)
+            task.wait(9)
+            hrp.CFrame = CFrame.new(-112, 4, -53)
+            task.wait(1)
+        end
+    end)
+end
+
+-- ═══════════════════════════════
 --  AUTO BUY LOOP
 -- ═══════════════════════════════
 local luckyBlocks = { "Golden block", "Angel" }
@@ -279,6 +298,15 @@ FarmBox:AddToggle("AutoCollect", {
     Tooltip  = "FireTouchInterest sur tous les CashCollector",
     Callback = function(val)
         if val then startAutoCollect() else stopAutoCollect() end
+    end,
+})
+
+FarmBox:AddToggle("AutoFarm", {
+    Text     = "Auto Farm",
+    Default  = false,
+    Tooltip  = "Farm automatique en boucle",
+    Callback = function(val)
+        if val then startAutoFarm() end
     end,
 })
 
