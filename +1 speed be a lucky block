@@ -1,49 +1,50 @@
 -- Be a Lucky Block | GD Studio | Part 1
--- Obsidian UI (correct API)
 
 local repo = "https://raw.githubusercontent.com/deividcomsono/Obsidian/main/"
 local Library = loadstring(game:HttpGet(repo .. "Library.lua"))()
 local Toggles = Library.Toggles
 
--- ↓ AJOUTE ICI ↓
+-- ═══════════════════════════════
+--  LOADING
+-- ═══════════════════════════════
 local Loading = Library:CreateLoading({
     Title      = "GD Studio",
     TotalSteps = 3,
 })
-
 Loading:SetMessage("Chargement du script...")
 Loading:SetDescription("Initialisation des services...")
 task.wait(0.8)
-
 Loading:SetCurrentStep(1)
 Loading:SetDescription("Connexion aux RemoteEvents...")
 task.wait(0.8)
-
 Loading:SetCurrentStep(2)
 Loading:ShowSidebarPage(true)
 Loading.Sidebar:AddLabel("Script : Lucky Block")
 Loading.Sidebar:AddLabel("Joueur : " .. game.Players.LocalPlayer.Name)
 Loading.Sidebar:AddLabel("Version : v1.0")
 task.wait(0.8)
-
 Loading:SetCurrentStep(3)
 Loading:SetDescription("Prêt !")
 task.wait(0.5)
-
-Loading:Continue() -- ferme le loader, ouvre la fenêtre principale
--- ↑ FIN LOADING ↑
+Loading:Continue()
 
 -- ═══════════════════════════════
---  KNIT HELPER
+--  SERVICES
 -- ═══════════════════════════════
-local function getKnit()
-    return ReplicatedStorage
-        :WaitForChild("Packages")
-        :WaitForChild("_Index")
-        :WaitForChild("sleitnick_knit@1.7.0")
-        :WaitForChild("knit")
-        :WaitForChild("Services")
-end
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+local player = Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoid = character:WaitForChild("Humanoid")
+local hrp = character:WaitForChild("HumanoidRootPart")
+
+player.CharacterAdded:Connect(function(c)
+    character = c
+    humanoid = c:WaitForChild("Humanoid")
+    hrp = c:WaitForChild("HumanoidRootPart")
+end)
 
 -- ═══════════════════════════════
 --  STATE
@@ -54,7 +55,7 @@ local collectConn  = nil
 local rebirthDone  = false
 
 -- ═══════════════════════════════
---  AUTO SPEED (run in place)
+--  AUTO SPEED
 -- ═══════════════════════════════
 local function startAutoSpeed()
     if speedConn then speedConn:Disconnect() end
@@ -94,51 +95,6 @@ local function unequipTreadmill()
 end
 
 -- ═══════════════════════════════
---  AUTO BUY SPEED (loop)
--- ═══════════════════════════════
-task.spawn(function()
-    while true do
-        task.wait(0.5)
-        if Toggles.AutoBuySpeed and Toggles.AutoBuySpeed.Value then
-            local ok, knit = pcall(getKnit)
-            if not ok then continue end
-            pcall(function()
-                knit.XpBoostService.RF.RequestPurchase:InvokeServer("+1Xp")
-            end)
-            task.wait(0.1)
-            pcall(function()
-                knit.TreadmillUpgradeService.RF.RequestPurchase:InvokeServer("XpMulti")
-            end)
-            task.wait(0.1)
-            pcall(function()
-                knit.TreadmillUpgradeService.RF.RequestPurchase:InvokeServer("XpGainSpeed")
-            end)
-        end
-    end
-end)
-
--- ═══════════════════════════════
---  AUTO BUY LUCKY BLOCKS (loop)
--- ═══════════════════════════════
-local luckyBlocks = { "Golden block", "Angel", "Rainbow block" }
-
-task.spawn(function()
-    while true do
-        task.wait(1)
-        if Toggles.AutoBuyLucky and Toggles.AutoBuyLucky.Value then
-            local ok, knit = pcall(getKnit)
-            if not ok then continue end
-            for _, name in ipairs(luckyBlocks) do
-                pcall(function()
-                    knit.LuckyBlockShopService.RF.RequestPurchase:InvokeServer(name)
-                end)
-                task.wait(0.2)
-            end
-        end
-    end
-end)
-
--- ═══════════════════════════════
 --  AUTO COLLECT
 -- ═══════════════════════════════
 local function startAutoCollect()
@@ -168,20 +124,87 @@ local function stopAutoCollect()
 end
 
 -- ═══════════════════════════════
---  OBSIDIAN WINDOW
+--  AUTO BUY LOOP
+-- ═══════════════════════════════
+local luckyBlocks = { "Golden block", "Angel" }
+
+task.spawn(function()
+    while true do
+        task.wait(0.5)
+
+        if Toggles.AutoBuySpeed and Toggles.AutoBuySpeed.Value then
+            pcall(function()
+                ReplicatedStorage
+                    :WaitForChild("Packages")
+                    :WaitForChild("_Index")
+                    :WaitForChild("sleitnick_knit@1.7.0")
+                    :WaitForChild("knit")
+                    :WaitForChild("Services")
+                    :WaitForChild("XpBoostService")
+                    :WaitForChild("RF")
+                    :WaitForChild("RequestPurchase")
+                    :InvokeServer("+1Xp")
+            end)
+        end
+
+        task.wait(0.1)
+
+        if Toggles.AutoBuyXpMulti and Toggles.AutoBuyXpMulti.Value then
+            pcall(function()
+                ReplicatedStorage.Packages._Index
+                    :FindFirstChild("sleitnick_knit@1.7.0")
+                    .knit.Services
+                    .TreadmillUpgradeService.RF.RequestPurchase
+                    :InvokeServer("XpMulti")
+            end)
+        end
+
+        task.wait(0.1)
+
+        if Toggles.AutoBuyXpGain and Toggles.AutoBuyXpGain.Value then
+            pcall(function()
+                ReplicatedStorage.Packages._Index
+                    :FindFirstChild("sleitnick_knit@1.7.0")
+                    .knit.Services
+                    .TreadmillUpgradeService.RF.RequestPurchase
+                    :InvokeServer("XpGainSpeed")
+            end)
+        end
+
+        task.wait(0.1)
+
+        if Toggles.AutoBuyLucky and Toggles.AutoBuyLucky.Value then
+            local selected = Library.Options.LuckyBlockDropdown
+                and Library.Options.LuckyBlockDropdown.Value
+            if selected then
+                pcall(function()
+                    ReplicatedStorage.Packages._Index
+                        :FindFirstChild("sleitnick_knit@1.7.0")
+                        .knit.Services
+                        .LuckyBlockShopService.RF.RequestPurchase
+                        :InvokeServer(selected)
+                end)
+            end
+        end
+
+    end
+end)
+
+-- ═══════════════════════════════
+--  WINDOW + TABS
 -- ═══════════════════════════════
 local Window = Library:CreateWindow({
-    Title = "GD Studio | Lucky Block",
-    Footer = "Alexandre",
-    Center = true,
-    AutoShow = true,
+    Title             = "GD Studio | Lucky Block",
+    Footer            = "Alexandre",
+    Center            = true,
+    AutoShow          = true,
     MobileButtonsSide = "Right",
 })
 
 local Tabs = {
-    Speed  = Window:AddTab("Speed",    "zap"),
-    Buy    = Window:AddTab("Auto Buy", "shopping-cart"),
-    Farm   = Window:AddTab("Farm",     "leaf"),
+    Speed = Window:AddTab("Speed",    "zap"),
+    Buy   = Window:AddTab("Auto Buy", "shopping-cart"),
+    Farm  = Window:AddTab("Farm",     "leaf"),
 }
 
 -- ═══════════════════════════════
@@ -190,18 +213,18 @@ local Tabs = {
 local SpeedBox = Tabs.Speed:AddLeftGroupbox("Speed", "activity")
 
 SpeedBox:AddToggle("AutoSpeed", {
-    Text    = "Auto Speed (Run in Place)",
-    Default = false,
-    Tooltip = "Court sur place pour accumuler la vitesse",
+    Text     = "Auto Speed (Run in Place)",
+    Default  = false,
+    Tooltip  = "Court sur place pour accumuler la vitesse",
     Callback = function(val)
         if val then startAutoSpeed() else stopAutoSpeed() end
     end,
 })
 
 SpeedBox:AddToggle("AutoTreadmill", {
-    Text    = "Auto Treadmill",
-    Default = false,
-    Tooltip = "Équipe / déséquipe le Treadmill",
+    Text     = "Auto Treadmill",
+    Default  = false,
+    Tooltip  = "Équipe / déséquipe le Treadmill",
     Callback = function(val)
         if val then equipTreadmill() else unequipTreadmill() end
     end,
@@ -231,9 +254,18 @@ BuyBox:AddToggle("AutoBuyXpGain", {
 })
 
 BuyBox:AddToggle("AutoBuyLucky", {
-    Text    = "Auto Buy Lucky Blocks",
+    Text    = "Auto Buy Lucky Block",
     Default = false,
-    Tooltip = "Golden → Angel → Rainbow",
+    Tooltip = "Achète le Lucky Block sélectionné en boucle",
+})
+
+local LuckyConfigBox = Tabs.Buy:AddRightGroupbox("Config Lucky Block", "star")
+
+LuckyConfigBox:AddDropdown("LuckyBlockDropdown", {
+    Values  = { "Golden block", "Angel" },
+    Default = 1,
+    Text    = "Lucky Block à acheter",
+    Tooltip = "Sélectionne le block à auto-acheter",
 })
 
 -- ═══════════════════════════════
@@ -242,9 +274,9 @@ BuyBox:AddToggle("AutoBuyLucky", {
 local FarmBox = Tabs.Farm:AddLeftGroupbox("Collect & Rebirth", "coins")
 
 FarmBox:AddToggle("AutoCollect", {
-    Text    = "Auto Collect Cash",
-    Default = false,
-    Tooltip = "FireTouchInterest sur tous les CashCollector",
+    Text     = "Auto Collect Cash",
+    Default  = false,
+    Tooltip  = "FireTouchInterest sur tous les CashCollector",
     Callback = function(val)
         if val then startAutoCollect() else stopAutoCollect() end
     end,
@@ -253,19 +285,25 @@ FarmBox:AddToggle("AutoCollect", {
 FarmBox:AddButton({
     Text    = "Auto Rebirth (Once)",
     Tooltip = "Effectue 1 rebirth immédiatement",
-    Func = function()
+    Func    = function()
         if rebirthDone then
             Library:Notify({ Title = "Rebirth", Description = "Déjà effectué !", Time = 3 })
             return
         end
-        local ok, knit = pcall(getKnit)
-        if ok then
-            pcall(function()
-                knit.RebirthService.RF.RequestRebirth:InvokeServer()
-            end)
-            rebirthDone = true
-            Library:Notify({ Title = "Rebirth", Description = "Rebirth effectué ✓", Time = 3 })
-        end
+        pcall(function()
+            ReplicatedStorage
+                :WaitForChild("Packages")
+                :WaitForChild("_Index")
+                :WaitForChild("sleitnick_knit@1.7.0")
+                :WaitForChild("knit")
+                :WaitForChild("Services")
+                :WaitForChild("RebirthService")
+                :WaitForChild("RF")
+                :WaitForChild("RequestRebirth")
+                :InvokeServer()
+        end)
+        rebirthDone = true
+        Library:Notify({ Title = "Rebirth", Description = "Rebirth effectué ✓", Time = 3 })
     end,
 })
 
