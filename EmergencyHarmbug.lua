@@ -17,7 +17,7 @@ local Camera       = workspace.CurrentCamera
 --  ORION
 -- ─────────────────────────────────────────────────────────
 local OrionLib = loadstring(game:HttpGet(
-    "https://raw.githubusercontent.com/jensonhirst/Orion/main/source", true
+    "https://raw.githubusercontent.com/shlexware/Orion/main/source", true
 ))()
 
 -- ─────────────────────────────────────────────────────────
