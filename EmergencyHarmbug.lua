@@ -16,9 +16,17 @@ local Camera       = workspace.CurrentCamera
 -- ─────────────────────────────────────────────────────────
 --  ORION
 -- ─────────────────────────────────────────────────────────
-local OrionLib = loadstring(game:HttpGet(
-    "https://raw.githubusercontent.com/shlexware/Orion/main/source", true
-))()
+local OrionLib
+for _, url in ipairs({
+    "https://raw.githubusercontent.com/shlexware/Orion/main/source",
+    "https://raw.githubusercontent.com/jensonhirst/Orion/main/source",
+    "https://raw.githubusercontent.com/ttwizz/Roblox/master/Orion.lua",
+}) do
+    local ok, res = pcall(function()
+        return loadstring(game:HttpGet(url, true))()
+    end)
+    if ok and res then OrionLib = res break end
+end
 
 -- ─────────────────────────────────────────────────────────
 --  SON  (137402801272072)
