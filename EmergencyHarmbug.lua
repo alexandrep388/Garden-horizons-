@@ -263,7 +263,7 @@ local function flyToDestination(destPos)
     task.wait(0.3)
 
     -- Étape 3 : Fly vers haute altitude au-dessus de la destination
-    local flyHeight = 200
+    local flyHeight = 100
     local highDest  = Vector3.new(destPos.X, destPos.Y + flyHeight, destPos.Z)
 
     -- On TP par étapes en arc (montée puis déplacement horizontal)
@@ -274,7 +274,7 @@ local function flyToDestination(destPos)
         (startPos.Z + highDest.Z) / 2
     )
 
-    local flySteps = 15
+    local flySteps = 10
     -- Phase montée + déplacement
     for i=1,flySteps do
         local alpha = i/flySteps
