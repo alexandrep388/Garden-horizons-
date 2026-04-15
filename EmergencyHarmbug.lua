@@ -249,50 +249,53 @@ local function flyToDestination(destPos)
 
     Notify("🚗 TP", L.flyStart)
 
-    -- TP au siège (étapes)
+    -- TP au siège lentement
     local origin = hrp.CFrame
     local seatCF = seat.CFrame + Vector3.new(0, 3, 0)
-    for i=1,4 do
-        pcall(function() hrp.CFrame = origin:Lerp(seatCF, i/4) end)
-        task.wait(0.04)
+    for i=1,6 do
+        pcall(function() hrp.CFrame = origin:Lerp(seatCF, i/6) end)
+        task.wait(0.08)
     end
-    task.wait(0.1)
+    task.wait(0.2)
 
-    -- Étape 2 : Remote enter
+    -- Remote enter
     pcall(function() getR(REM_ENTER):FireServer(seat,"ewr",false) end)
+    task.wait(0.5)
+
+    -- Étape 2 : Montée lente à haute altitude
+    local startPos = hrp.Position
+    local flyHeight = 180
+    local highPos = Vector3.new(startPos.X, startPos.Y + flyHeight, startPos.Z)
+
+    -- Montée verticale en 20 étapes lentes
+    for i=1,20 do
+        local p = Vector3.new(startPos.X, startPos.Y + (flyHeight * i/20), startPos.Z)
+        pcall(function() hrp.CFrame = CFrame.new(p) end)
+        task.wait(0.12)  -- 0.12s par step = ~2.4s de montée
+    end
     task.wait(0.3)
 
-    -- Étape 3 : Fly vers haute altitude au-dessus de la destination
-    local flyHeight = 100
-    local highDest  = Vector3.new(destPos.X, destPos.Y + flyHeight, destPos.Z)
+    -- Étape 3 : Déplacement horizontal lent à haute altitude
+    local highDest = Vector3.new(destPos.X, startPos.Y + flyHeight, destPos.Z)
+    local hSteps = 30  -- 30 steps × 0.15s = ~4.5s de déplacement
 
-    -- On TP par étapes en arc (montée puis déplacement horizontal)
-    local startPos = hrp.Position
-    local midHigh  = Vector3.new(
-        (startPos.X + highDest.X) / 2,
-        math.max(startPos.Y, highDest.Y) + 50,
-        (startPos.Z + highDest.Z) / 2
-    )
-
-    local flySteps = 10
-    -- Phase montée + déplacement
-    for i=1,flySteps do
-        local alpha = i/flySteps
-        local pos
-        if alpha < 0.5 then
-            -- Montée vers le point haut
-            pos = startPos:Lerp(midHigh, alpha*2)
-        else
-            -- Descente vers la destination haute
-            pos = midHigh:Lerp(highDest, (alpha-0.5)*2)
-        end
-        pcall(function() hrp.CFrame = CFrame.new(pos) end)
-        task.wait(0.05)
+    for i=1,hSteps do
+        local p = highPos:Lerp(highDest, i/hSteps)
+        pcall(function() hrp.CFrame = CFrame.new(p) end)
+        task.wait(0.15)
     end
+    task.wait(0.3)
 
-    task.wait(0.15)
+    -- Étape 4 : Descente lente
+    local destHigh = Vector3.new(destPos.X, destPos.Y + flyHeight, destPos.Z)
+    for i=1,20 do
+        local p = destHigh:Lerp(Vector3.new(destPos.X, destPos.Y + 3, destPos.Z), i/20)
+        pcall(function() hrp.CFrame = CFrame.new(p) end)
+        task.wait(0.10)  -- ~2s de descente
+    end
+    task.wait(0.2)
 
-    -- Étape 4 : TP direct à la destination finale
+    -- TP final au sol
     pcall(function() hrp.CFrame = CFrame.new(destPos) end)
 
     Notify("✅ TP", L.flyDone)
