@@ -277,7 +277,7 @@ local function flyToDestination(destPos)
 
     -- Étape 3 : Déplacement horizontal lent à haute altitude
     local highDest = Vector3.new(destPos.X, startPos.Y + flyHeight, destPos.Z)
-    local hSteps = 30  -- 30 steps × 0.15s = ~4.5s de déplacement
+    local hSteps = 50  -- 30 steps × 0.15s = ~4.5s de déplacement
 
     for i=1,hSteps do
         local p = highPos:Lerp(highDest, i/hSteps)
