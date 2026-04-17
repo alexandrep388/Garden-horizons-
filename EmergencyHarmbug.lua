@@ -251,7 +251,7 @@ local function flyToDestination(destPos)
 
     -- TP au siège lentement
     local origin = hrp.CFrame
-    local seatCF = seat.CFrame + Vector3.new(0, 3, 0)
+    local seatCF = CFrame.new(seat.Position + Vector3.new(0, 3, 0))
     for i=1,6 do
         pcall(function() hrp.CFrame = origin:Lerp(seatCF, i/6) end)
         task.wait(0.08)
