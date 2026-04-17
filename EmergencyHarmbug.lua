@@ -230,6 +230,7 @@ local TEAM_COL = {
 local isFlyingTP = false
 
 local function flyToDestination(destPos)
+local function flyToDestination(destPos)
     if isFlyingTP then return end
     isFlyingTP = true
 
@@ -238,7 +239,7 @@ local function flyToDestination(destPos)
     local hrp = char:FindFirstChild("HumanoidRootPart")
     if not hrp then isFlyingTP=false return end
 
-    -- Étape 1 : TP à la voiture
+    -- Trouve la voiture
     local car = workspace.Vehicles and workspace.Vehicles:FindFirstChild(LP.Name)
     if not car then
         Notify("TP", L.nocar)
@@ -249,58 +250,44 @@ local function flyToDestination(destPos)
 
     Notify("🚗 TP", L.flyStart)
 
-    -- TP au siège lentement
-    local origin = hrp.CFrame
+    -- TP joueur au siège
     local seatCF = CFrame.new(seat.Position + Vector3.new(0, 3, 0))
-    for i=1,6 do
-        pcall(function() hrp.CFrame = origin:Lerp(seatCF, i/6) end)
-        task.wait(0.08)
+    pcall(function() hrp.CFrame = seatCF end)
+    task.wait(0.15)
+
+    -- Entre dans la voiture via remote
+    pcall(function() getR(REM_ENTER):FireServer(seat, "ewr", false) end)
+    task.wait(0.6)
+
+    -- Déplace la voiture ENTIÈRE au sol en steps (pas de montée = pas de fly detection)
+    -- On garde le Y de la destination, on déplace juste X et Z progressivement
+    local startPos = car:GetPivot().Position
+    local groundY  = startPos.Y  -- garde la hauteur actuelle de la voiture
+
+    local STEPS = 40  -- 40 steps × 0.2s = ~8 secondes de trajet
+    for i = 1, STEPS do
+        local alpha = i / STEPS
+        -- Interpolation X et Z seulement, Y reste constant (sol)
+        local newX = startPos.X + (destPos.X - startPos.X) * alpha
+        local newZ = startPos.Z + (destPos.Z - startPos.Z) * alpha
+        local newPos = Vector3.new(newX, groundY, newZ)
+
+        pcall(function()
+            car:PivotTo(CFrame.new(newPos))
+        end)
+        task.wait(0.2)
     end
-    task.wait(0.2)
 
-    -- Remote enter
-    pcall(function() getR(REM_ENTER):FireServer(seat,"ewr",false) end)
-    task.wait(0.5)
-
-    -- Étape 2 : Montée lente à haute altitude
-    local startPos = hrp.Position
-    local flyHeight = 180
-    local highPos = Vector3.new(startPos.X, startPos.Y + flyHeight, startPos.Z)
-
-    -- Montée verticale en 20 étapes lentes
-    for i=1,20 do
-        local p = Vector3.new(startPos.X, startPos.Y + (flyHeight * i/20), startPos.Z)
-        pcall(function() hrp.CFrame = CFrame.new(p) end)
-        task.wait(0.12)  -- 0.12s par step = ~2.4s de montée
-    end
+    -- TP final précis à la destination
+    task.wait(0.1)
+    pcall(function()
+        car:PivotTo(CFrame.new(destPos.X, groundY, destPos.Z))
+    end)
     task.wait(0.3)
-
-    -- Étape 3 : Déplacement horizontal lent à haute altitude
-    local highDest = Vector3.new(destPos.X, startPos.Y + flyHeight, destPos.Z)
-    local hSteps = 50  -- 30 steps × 0.15s = ~4.5s de déplacement
-
-    for i=1,hSteps do
-        local p = highPos:Lerp(highDest, i/hSteps)
-        pcall(function() hrp.CFrame = CFrame.new(p) end)
-        task.wait(0.15)
-    end
-    task.wait(0.3)
-
-    -- Étape 4 : Descente lente
-    local destHigh = Vector3.new(destPos.X, destPos.Y + flyHeight, destPos.Z)
-    for i=1,20 do
-        local p = destHigh:Lerp(Vector3.new(destPos.X, destPos.Y + 3, destPos.Z), i/20)
-        pcall(function() hrp.CFrame = CFrame.new(p) end)
-        task.wait(0.10)  -- ~2s de descente
-    end
-    task.wait(0.2)
-
-    -- TP final au sol
-    pcall(function() hrp.CFrame = CFrame.new(destPos) end)
 
     Notify("✅ TP", L.flyDone)
     isFlyingTP = false
-end
+    end
 
 -- ═══════════════════════════════════════════════
 --  FENÊTRE ORION
