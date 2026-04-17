@@ -97,42 +97,26 @@ local ThirdsGroup = Window:Section({
     Opened = false,
 })
 
----
---- EXEMPLE DE TEXTE GRADIENT DANS L'ONGLET MAIN
----
-
-local PageSection = TabMain:Section({
-    Title = "Fonctionnalités de Survie"
-})
-
--- Application du dégradé sur le titre de la section de la page
-PageSection:AddGradient(WindUI:Gradient({
-    ["0"] = { Color = Color3.fromHex("#10b981"), Transparency = 0 },
-    ["100"] = { Color = Color3.fromHex("#047857"), Transparency = 0 },
-}, { Rotation = 90 }))
-
-PageSection:Toggle({
-    Title = "Auto-Farm",
-    Value = false,
-    Callback = function(state)
-        print("Auto-farm est :", state)
-    end
-})
-
-local Tab = Window:Tab({
-    Title = "INFO",
+local Auto = ThirdsGroup:Tab({
+    Title = "Auto",
     Icon = "bird", -- optional
     Locked = false,
 })
 
-local Tab = Window:Tab({
-    Title = "MAIN",
+local Teleport = ThirdsGroup:Tab({
+    Title = "Teleport",
     Icon = "bird", -- optional
     Locked = false,
 })
 
-local Section = Window:Section({
-    Title = "Secondary",
-    Icon = "armchair",
-    Opened = true,
+local UPDATE! = ThirdsGroup:Tab({
+    Title = "UPDATE!",
+    Icon = "bird", -- optional
+    Locked = false,
+})
+
+local Setting = ThirdsGroup:Tab({
+    Title = "Setting",
+    Icon = "bird", -- optional
+    Locked = false,
 })
