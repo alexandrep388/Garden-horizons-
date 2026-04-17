@@ -34,7 +34,7 @@ local Window = WindUI:CreateWindow({
 
 -- Section principale
 local MainGroup = Window:Section({
-    Title = "Main",
+    Title = "principal",
     Icon = "cuboid",
     Opened = true,
 })
@@ -48,7 +48,7 @@ local TabInfo = MainGroup:Tab({
 
 local TabMain = MainGroup:Tab({
     Title = "MAIN",
-    Icon = "bird",
+    Icon = "pencil",
     Locked = false,
 })
 
@@ -61,20 +61,32 @@ local SecondaryGroup = Window:Section({
 
 local MainGroup = Window:Section({
     Title = "Bring",
-    Icon = "cuboid",
+    Icon = "send-to-back",
     Opened = true,
 })
 
 -- On ajoute les onglets DANS MainGroup (Note l'utilisation de MainGroup:Tab au lieu de Window:Tab)
 local TabOther = MainGroup:Tab({
     Title = "Other",
-    Icon = "info",
+    Icon = "rbxassetid://10723343606",
     Locked = false,
 })
 
-local TabBring = MainGroup:Tab({
-    Title = "Bring",
-    Icon = "bird",
+TabAura = MainGroup:Tab({
+    Title = "Aura",
+    Icon = "hat-glasses",
+    Locked = false,
+})
+
+TabMiscs = MainGroup:Tab({
+    Title = "Miscs",
+    Icon = "rbxassetid://10734897102",
+    Locked = false,
+})
+
+TabFarm = MainGroup:Tab({
+    Title = "Farm",
+    Icon = "axe",
     Locked = false,
 })
 
@@ -122,11 +134,5 @@ local Tab = Window:Tab({
 local Section = Window:Section({
     Title = "Secondary",
     Icon = "armchair",
-    Opened = true,
-})
-
-local Section = Window:Section({
-    Title = "thirds",
-    Icon = "circle-plus",
     Opened = true,
 })
