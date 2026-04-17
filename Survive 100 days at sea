@@ -1,1 +1,49 @@
 local WindUI = loadstring(game:HttpGet("https://github.com/Footagesus/WindUI/releases/latest/download/main.lua"))()
+
+-- [1] Création du thème
+WindUI:AddTheme({
+    Name = "Emerald",
+    Accent = Color3.fromHex("#047857"),
+    Background = Color3.fromHex("#011411"),
+    Outline = Color3.fromHex("#FFFFFF"), -- Tu peux aussi essayer #064e3b pour plus de discrétion
+    Text = Color3.fromHex("#ecfdf5"),
+    Placeholder = Color3.fromHex("#3fbf8f"),
+    Button = Color3.fromHex("#059669"),
+    Icon = Color3.fromHex("#10b981"),
+})
+
+WindUI:SetTheme("Emerald")
+
+-- [2] Création de la fenêtre
+local Window = WindUI:CreateWindow({
+    Title = "Survive 100 day in sea",
+    Icon = "panel-right", -- Lucide icon (le nom suffit généralement sur les versions récentes)
+    Author = "Gd studio",
+    Folder = "Survive100dayinsea",
+    Transparent = true, -- Effet de transparence stylé
+    User = {
+        Enabled = true,
+        Anonymous = false,
+        Callback = function()
+            print("Profil cliqué")
+        end,
+    },
+})
+
+local Section = Window:Section({
+    Title = "Main",
+    Icon = "cuboid",
+    Opened = true,
+})
+
+local Section = Window:Section({
+    Title = "Secondary",
+    Icon = "armchair",
+    Opened = true,
+})
+
+local Section = Window:Section({
+    Title = "thirds",
+    Icon = "circle-plus",
+    Opened = true,
+})
