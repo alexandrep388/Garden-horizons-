@@ -59,6 +59,25 @@ local SecondaryGroup = Window:Section({
     Opened = false,
 })
 
+local MainGroup = Window:Section({
+    Title = "Bring",
+    Icon = "cuboid",
+    Opened = true,
+})
+
+-- On ajoute les onglets DANS MainGroup (Note l'utilisation de MainGroup:Tab au lieu de Window:Tab)
+local TabOther = MainGroup:Tab({
+    Title = "Other",
+    Icon = "info",
+    Locked = false,
+})
+
+local TabBring = MainGroup:Tab({
+    Title = "Bring",
+    Icon = "bird",
+    Locked = false,
+})
+
 -- Section tertiaire
 local ThirdsGroup = Window:Section({
     Title = "Thirds",
