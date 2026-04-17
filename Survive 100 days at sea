@@ -30,9 +30,9 @@ local Window = WindUI:CreateWindow({
     },
 })
 
--- [3] Organisation des Sections et Onglets
+-- [3] Organisation des Sections (Barre latérale)
 
--- Section principale
+--- SECTION PRINCIPALE ---
 local MainGroup = Window:Section({
     Title = "Principal",
     Icon = "cuboid",
@@ -40,6 +40,102 @@ local MainGroup = Window:Section({
 })
 
 local TabInfo = MainGroup:Tab({
+    Title = "INFO",
+    Icon = "info",
+})
+
+local TabMain = MainGroup:Tab({
+    Title = "MAIN",
+    Icon = "pencil",
+})
+
+--- SECTION BRING ---
+local BringGroup = Window:Section({
+    Title = "Bring",
+    Icon = "send-to-back",
+    Opened = false,
+})
+
+local TabOther = BringGroup:Tab({
+    Title = "Other",
+    Icon = "rbxassetid://10723343606",
+})
+
+local TabAura = BringGroup:Tab({
+    Title = "Aura",
+    Icon = "orbit",
+})
+
+local TabMiscs = BringGroup:Tab({
+    Title = "Miscs",
+    Icon = "rbxassetid://10734897102",
+})
+
+local TabFarm = BringGroup:Tab({
+    Title = "Farm",
+    Icon = "axe",
+})
+
+--- SECTION THIRDS ---
+local ThirdsGroup = Window:Section({
+    Title = "Thirds",
+    Icon = "circle-plus",
+    Opened = false,
+})
+
+local TabAuto = ThirdsGroup:Tab({
+    Title = "Auto",
+    Icon = "bot",
+})
+
+local TabTeleport = ThirdsGroup:Tab({
+    Title = "Teleport",
+    Icon = "map-pin",
+})
+
+local TabUpdate = ThirdsGroup:Tab({
+    Title = "UPDATE!",
+    Icon = "refresh-cw",
+})
+
+local TabSetting = ThirdsGroup:Tab({
+    Title = "Setting",
+    Icon = "settings",
+})
+
+-- [4] Affichage du Dialogue au lancement
+Window:Dialog({
+    Title = "Attention !",
+    Content = "Voulez-vous activer le mode Hardcore ? Vous ne pourrez pas revenir en arrière.",
+    Buttons = {
+        {
+            Title = "Confirmer",
+            Callback = function()
+                print("Mode Hardcore activé")
+            end,
+        },
+        {
+            Title = "Annuler"
+        }
+    }
+})
+
+-- [5] Exemple de contenu dans l'onglet MAIN (avec Gradient)
+local MainContent = TabMain:Section({
+    Title = "Fonctions de survie"
+})
+
+MainContent:AddGradient(WindUI:Gradient({
+    ["0"] = { Color = Color3.fromHex("#10b981"), Transparency = 0 },
+    ["100"] = { Color = Color3.fromHex("#047857"), Transparency = 0 },
+}, { Rotation = 90 }))
+
+MainContent:Button({
+    Title = "Action principale",
+    Callback = function()
+        print("Bouton cliqué !")
+    end
+})
     Title = "INFO",
     Icon = "info",
     Locked = false,
@@ -163,3 +259,21 @@ local Setting = ThirdsGroup:Tab({
     Icon = "bird", -- optional
     Locked = false,
 })
+
+Window:Dialog({
+    Title = "Attention !",
+    Content = "Voulez-vous activer le mode Hardcore ? Vous ne pourrez pas revenir en arrière.",
+    Buttons = {
+        {
+            Title = "Confirmer",
+            Callback = function()
+                print("Mode Hardcore activé")
+            end,
+        },
+        {
+            Title = "Annuler",
+            -- Pas besoin de callback si on veut juste fermer la boîte
+        }
+    }
+})
+
