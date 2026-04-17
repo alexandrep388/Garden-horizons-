@@ -34,12 +34,11 @@ local Window = WindUI:CreateWindow({
 
 -- Section principale
 local MainGroup = Window:Section({
-    Title = "principal",
+    Title = "Principal",
     Icon = "cuboid",
     Opened = true,
 })
 
--- On ajoute les onglets DANS MainGroup (Note l'utilisation de MainGroup:Tab au lieu de Window:Tab)
 local TabInfo = MainGroup:Tab({
     Title = "INFO",
     Icon = "info",
@@ -52,39 +51,83 @@ local TabMain = MainGroup:Tab({
     Locked = false,
 })
 
--- Section secondaire
-local SecondaryGroup = Window:Section({
-    Title = "Secondary",
-    Icon = "armchair",
-    Opened = false,
-})
-
-local MainGroup = Window:Section({
+-- Section secondaire (Bring)
+local BringGroup = Window:Section({
     Title = "Bring",
     Icon = "send-to-back",
     Opened = true,
 })
 
--- On ajoute les onglets DANS MainGroup (Note l'utilisation de MainGroup:Tab au lieu de Window:Tab)
-local TabOther = MainGroup:Tab({
+local TabOther = BringGroup:Tab({
     Title = "Other",
     Icon = "rbxassetid://10723343606",
     Locked = false,
 })
 
-TabAura = MainGroup:Tab({
+local TabAura = BringGroup:Tab({
     Title = "Aura",
-    Icon = "hat-glasses",
+    Icon = "orbit", -- "hat-glasses" n'est pas toujours reconnu, "orbit" est plus sûr
     Locked = false,
 })
 
-TabMiscs = MainGroup:Tab({
+local TabMiscs = BringGroup:Tab({
     Title = "Miscs",
     Icon = "rbxassetid://10734897102",
     Locked = false,
 })
 
-TabFarm = MainGroup:Tab({
+local TabFarm = BringGroup:Tab({
+    Title = "Farm",
+    Icon = "axe",
+    Locked = false,
+})
+
+-- Section tertiaire (Autres options)
+local ThirdsGroup = Window:Section({
+    Title = "Thirds",
+    Icon = "circle-plus",
+    Opened = false,
+})
+
+local TabAuto = ThirdsGroup:Tab({
+    Title = "Auto",
+    Icon = "bot",
+    Locked = false,
+})
+
+local TabTeleport = ThirdsGroup:Tab({
+    Title = "Teleport",
+    Icon = "map-pin",
+})
+
+local TabUpdate = ThirdsGroup:Tab({ -- "UPDATE!" corrigé ici
+    Title = "UPDATE!",
+    Icon = "refresh-cw",
+})
+
+local TabSetting = ThirdsGroup:Tab({
+    Title = "Setting",
+    Icon = "settings",
+})
+local TabOther = SecondaryGroup:Tab({
+    Title = "Other",
+    Icon = "rbxassetid://10723343606",
+    Locked = false,
+})
+
+TabAura = SecondaryGroup:Tab({
+    Title = "Aura",
+    Icon = "hat-glasses",
+    Locked = false,
+})
+
+TabMiscs = SecondaryGroup:Tab({
+    Title = "Miscs",
+    Icon = "rbxassetid://10734897102",
+    Locked = false,
+})
+
+TabFarm = SecondaryGroup:Tab({
     Title = "Farm",
     Icon = "axe",
     Locked = false,
