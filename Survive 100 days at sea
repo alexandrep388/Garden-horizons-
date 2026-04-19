@@ -1,6 +1,6 @@
 local WindUI = loadstring(game:HttpGet("https://vercel.app"))()
 
--- [1] Thème Emerald
+-- Thème Emerald
 WindUI:AddTheme({
     Name = "Emerald",
     Accent = Color3.fromHex("#047857"),
@@ -13,7 +13,6 @@ WindUI:AddTheme({
 })
 WindUI:SetTheme("Emerald")
 
--- [2] Fenêtre
 local Window = WindUI:CreateWindow({
     Title = "Survive 100 day in sea",
     Icon = "rbxassetid://10734950309",
@@ -22,7 +21,7 @@ local Window = WindUI:CreateWindow({
     Transparent = true,
 })
 
--- [3] Navigation latérale (Sections & Tabs)
+-- [ NAVIGATION ]
 local MainGroup = Window:Section({ Title = "Principal", Icon = "rbxassetid://10723342555", Opened = true })
 local TabInfo = MainGroup:Tab({ Title = "INFO", Icon = "rbxassetid://10723344430" })
 local TabMain = MainGroup:Tab({ Title = "MAIN", Icon = "rbxassetid://10723342321" })
@@ -39,292 +38,70 @@ local TabTeleport = ThirdsGroup:Tab({ Title = "Teleport", Icon = "rbxassetid://1
 local TabUpdate = ThirdsGroup:Tab({ Title = "UPDATE!", Icon = "rbxassetid://10734950680" })
 local TabSetting = ThirdsGroup:Tab({ Title = "Setting", Icon = "rbxassetid://10734950309" })
 
--- [4] Remplissage des Sections par Page
+-- [ CONTENU DES TABS ]
 
 -- TAB MAIN
 local MainSect = TabMain:Section({ Title = "Main Section" })
-MainSect:AddGradient(WindUI:Gradient({["0"]={Color=Color3.fromHex("#10b981")},["100"]={Color=Color3.fromHex("#047857")}},{Rotation=90}))
+MainSect:Button({ Title = "Inf Jump", Callback = function() end })
+MainSect:Toggle({ Title = "Fullbright", Value = false, Callback = function() end })
 
--- TAB BRING
-TabOther:Section({ Title = "Setting Section" })
-TabOther:Section({ Title = "Bring" })
-TabOther:Section({ Title = "Armure" })
-TabOther:Section({ Title = "Other" })
+-- TAB OTHER (BRING)
+local BringSetSect = TabOther:Section({ Title = "Setting Section" })
+BringSetSect:Dropdown({ Title = "Vitesse de bring", Multi = false, Options = {"Lent", "Moyen", "Rapide"}, Callback = function() end })
 
--- TAB MISCS
-TabMiscs:Section({ Title = "Misc Sections" })
+local DebrisSect = TabOther:Section({ Title = "Bring Section" })
+DebrisSect:MultiDropdown({ Title = "Debris", Options = {"Bois", "Plastique", "Métal"}, Callback = function() end })
+DebrisSect:Toggle({ Title = "TP Debris", Value = false, Callback = function() end })
+
+local ArmorSect = TabOther:Section({ Title = "Armure Section" })
+ArmorSect:MultiDropdown({ Title = "Armure", Options = {"Casque", "Plastron", "Bottes"}, Callback = function() end })
+ArmorSect:Toggle({ Title = "TP Armure", Value = false, Callback = function() end })
+ArmorSect:Dropdown({ Title = "Coffre", Options = {"Coffre 1", "Coffre 2"}, Callback = function() end })
+ArmorSect:Toggle({ Title = "TP Coffre", Value = false, Callback = function() end })
+
+local OtherBringSect = TabOther:Section({ Title = "Other Sections" })
+OtherBringSect:MultiDropdown({ Title = "Other", Options = {"Items", "Food"}, Callback = function() end })
+OtherBringSect:Toggle({ Title = "TP Other", Value = false, Callback = function() end })
+
+-- TAB MISCS (MACHINE)
+local MachineSect = TabMiscs:Section({ Title = "Machine" })
+MachineSect:Toggle({ Title = "Auto active machine", Value = false, Callback = function() end })
 
 -- TAB AURA
-TabAura:Section({ Title = "Settings Sections" })
-TabAura:Section({ Title = "Aura" })
+local AuraSetSect = TabAura:Section({ Title = "Setting Section" })
+AuraSetSect:Slider({ Title = "Aura Speed", Min = 1, Max = 100, Value = 50, Callback = function() end })
+AuraSetSect:Slider({ Title = "Aura Range", Min = 1, Max = 50, Value = 15, Callback = function() end })
 
--- TAB FARM
-TabFarm:Section({ Title = "Setting Section" })
-TabFarm:Section({ Title = "Farm" })
+local AuraSect = TabAura:Section({ Title = "Aura Section" })
+AuraSect:Toggle({ Title = "Aura Active", Value = false, Callback = function() end })
 
 -- TAB SETTING
-TabSetting:Section({ Title = "Setting Section" })
+local SetSect = TabSetting:Section({ Title = "Setting Section" })
+SetSect:Dropdown({ Title = "Thème", Options = {"Emerald", "Dark", "Light"}, Callback = function() end })
+SetSect:Dropdown({ Title = "Police", Options = {"Default", "Code", "Roboto"}, Callback = function() end })
 TabSetting:Section({ Title = "Save | Config" })
 
--- TAB UPDATE
-local UpdateSect = TabUpdate:Section({ Title = "Status" })
-UpdateSect:Paragraph({ Title = "Coming Soon", Content = "De nouvelles fonctionnalités arrivent bientôt dans cette section !" })
+-- TAB TP
+local PeopleSect = TabTeleport:Section({ Title = "People Section" })
+PeopleSect:Dropdown({ Title = "People", Options = {"Player1", "Player2"}, Callback = function() end })
+PeopleSect:Button({ Title = "TP Player", Callback = function() end })
+PeopleSect:Dropdown({ Title = "Save", Options = {"Home", "Base"}, Callback = function() end })
+PeopleSect:Button({ Title = "TP Save", Callback = function() end })
 
--- TAB TELEPORT
-TabTeleport:Section({ Title = "People Section" })
-TabTeleport:Section({ Title = "Place" })
-TabTeleport:Section({ Title = "Other" })
+local PlaceSect = TabTeleport:Section({ Title = "Place Section" })
+PlaceSect:Dropdown({ Title = "Place", Options = {"Island", "Spawn", "Secret"}, Callback = function() end })
+PlaceSect:Button({ Title = "TP Place", Callback = function() end })
 
 -- TAB AUTO
-TabAuto:Section({ Title = "Setting" })
+local AutoSect = TabAuto:Section({ Title = "Setting" })
 TabAuto:Section({ Title = "Auto" })
 
--- [5] Dialogue final
+-- TAB UPDATE
+local UpSect = TabUpdate:Section({ Title = "Update Log" })
+UpSect:Paragraph({ Title = "Coming Soon", Content = "D'autres fonctionnalités seront ajoutées bientôt ! Repose-toi bien." })
+
 Window:Dialog({
     Title = "Emerald Hub",
-    Content = "Interface chargée avec toutes les sections.",
-    Buttons = {{ Title = "C'est parti !" }}
+    Content = "Interface complète générée. Bonne pause !",
+    Buttons = {{ Title = "Merci" }}
 })
-    Title = "Principal",
-    Icon = "cuboid",
-    Opened = true,
-})
-
-local TabInfo = MainGroup:Tab({
-    Title = "INFO",
-    Icon = "info",
-})
-
-local TabMain = MainGroup:Tab({
-    Title = "MAIN",
-    Icon = "pencil",
-})
-
---- SECTION BRING ---
-local BringGroup = Window:Section({
-    Title = "Bring",
-    Icon = "send-to-back",
-    Opened = false,
-})
-
-local TabOther = BringGroup:Tab({
-    Title = "Other",
-    Icon = "rbxassetid://10723343606",
-})
-
-local TabAura = BringGroup:Tab({
-    Title = "Aura",
-    Icon = "orbit",
-})
-
-local TabMiscs = BringGroup:Tab({
-    Title = "Miscs",
-    Icon = "rbxassetid://10734897102",
-})
-
-local TabFarm = BringGroup:Tab({
-    Title = "Farm",
-    Icon = "axe",
-})
-
---- SECTION THIRDS ---
-local ThirdsGroup = Window:Section({
-    Title = "Thirds",
-    Icon = "circle-plus",
-    Opened = false,
-})
-
-local TabAuto = ThirdsGroup:Tab({
-    Title = "Auto",
-    Icon = "bot",
-})
-
-local TabTeleport = ThirdsGroup:Tab({
-    Title = "Teleport",
-    Icon = "map-pin",
-})
-
-local TabUpdate = ThirdsGroup:Tab({
-    Title = "UPDATE!",
-    Icon = "refresh-cw",
-})
-
-local TabSetting = ThirdsGroup:Tab({
-    Title = "Setting",
-    Icon = "settings",
-})
-
--- [4] Affichage du Dialogue au lancement
-Window:Dialog({
-    Title = "Attention !",
-    Content = "Voulez-vous activer le mode Hardcore ? Vous ne pourrez pas revenir en arrière.",
-    Buttons = {
-        {
-            Title = "Confirmer",
-            Callback = function()
-                print("Mode Hardcore activé")
-            end,
-        },
-        {
-            Title = "Annuler"
-        }
-    }
-})
-
--- [5] Exemple de contenu dans l'onglet MAIN (avec Gradient)
-local MainContent = TabMain:Section({
-    Title = "Fonctions de survie"
-})
-
-MainContent:AddGradient(WindUI:Gradient({
-    ["0"] = { Color = Color3.fromHex("#10b981"), Transparency = 0 },
-    ["100"] = { Color = Color3.fromHex("#047857"), Transparency = 0 },
-}, { Rotation = 90 }))
-
-MainContent:Button({
-    Title = "Action principale",
-    Callback = function()
-        print("Bouton cliqué !")
-    end
-})
-    Title = "INFO",
-    Icon = "info",
-    Locked = false,
-})
-
-local TabMain = MainGroup:Tab({
-    Title = "MAIN",
-    Icon = "pencil",
-    Locked = false,
-})
-
--- Section secondaire (Bring)
-local BringGroup = Window:Section({
-    Title = "Bring",
-    Icon = "send-to-back",
-    Opened = true,
-})
-
-local TabOther = BringGroup:Tab({
-    Title = "Other",
-    Icon = "rbxassetid://10723343606",
-    Locked = false,
-})
-
-local TabAura = BringGroup:Tab({
-    Title = "Aura",
-    Icon = "orbit", -- "hat-glasses" n'est pas toujours reconnu, "orbit" est plus sûr
-    Locked = false,
-})
-
-local TabMiscs = BringGroup:Tab({
-    Title = "Miscs",
-    Icon = "rbxassetid://10734897102",
-    Locked = false,
-})
-
-local TabFarm = BringGroup:Tab({
-    Title = "Farm",
-    Icon = "axe",
-    Locked = false,
-})
-
--- Section tertiaire (Autres options)
-local ThirdsGroup = Window:Section({
-    Title = "Thirds",
-    Icon = "circle-plus",
-    Opened = false,
-})
-
-local TabAuto = ThirdsGroup:Tab({
-    Title = "Auto",
-    Icon = "bot",
-    Locked = false,
-})
-
-local TabTeleport = ThirdsGroup:Tab({
-    Title = "Teleport",
-    Icon = "map-pin",
-})
-
-local TabUpdate = ThirdsGroup:Tab({ -- "UPDATE!" corrigé ici
-    Title = "UPDATE!",
-    Icon = "refresh-cw",
-})
-
-local TabSetting = ThirdsGroup:Tab({
-    Title = "Setting",
-    Icon = "settings",
-})
-local TabOther = SecondaryGroup:Tab({
-    Title = "Other",
-    Icon = "rbxassetid://10723343606",
-    Locked = false,
-})
-
-TabAura = SecondaryGroup:Tab({
-    Title = "Aura",
-    Icon = "hat-glasses",
-    Locked = false,
-})
-
-TabMiscs = SecondaryGroup:Tab({
-    Title = "Miscs",
-    Icon = "rbxassetid://10734897102",
-    Locked = false,
-})
-
-TabFarm = SecondaryGroup:Tab({
-    Title = "Farm",
-    Icon = "axe",
-    Locked = false,
-})
-
--- Section tertiaire
-local ThirdsGroup = Window:Section({
-    Title = "Thirds",
-    Icon = "circle-plus",
-    Opened = false,
-})
-
-local Auto = ThirdsGroup:Tab({
-    Title = "Auto",
-    Icon = "bird", -- optional
-    Locked = false,
-})
-
-local Teleport = ThirdsGroup:Tab({
-    Title = "Teleport",
-    Icon = "bird", -- optional
-    Locked = false,
-})
-
-local UPDATE! = ThirdsGroup:Tab({
-    Title = "UPDATE!",
-    Icon = "bird", -- optional
-    Locked = false,
-})
-
-local Setting = ThirdsGroup:Tab({
-    Title = "Setting",
-    Icon = "bird", -- optional
-    Locked = false,
-})
-
-Window:Dialog({
-    Title = "Attention !",
-    Content = "Voulez-vous activer le mode Hardcore ? Vous ne pourrez pas revenir en arrière.",
-    Buttons = {
-        {
-            Title = "Confirmer",
-            Callback = function()
-                print("Mode Hardcore activé")
-            end,
-        },
-        {
-            Title = "Annuler",
-            -- Pas besoin de callback si on veut juste fermer la boîte
-        }
-    }
-})
-
