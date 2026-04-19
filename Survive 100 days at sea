@@ -1,6 +1,6 @@
-local WindUI = loadstring(game:HttpGet("https://github.com/Footagesus/WindUI/releases/latest/download/main.lua"))()
+local WindUI = loadstring(game:HttpGet("https://vercel.app"))()
 
--- [1] Création du thème Emerald
+-- [1] Thème Emerald
 WindUI:AddTheme({
     Name = "Emerald",
     Accent = Color3.fromHex("#047857"),
@@ -11,29 +11,80 @@ WindUI:AddTheme({
     Button = Color3.fromHex("#059669"),
     Icon = Color3.fromHex("#10b981"),
 })
-
 WindUI:SetTheme("Emerald")
 
--- [2] Création de la fenêtre
+-- [2] Fenêtre
 local Window = WindUI:CreateWindow({
     Title = "Survive 100 day in sea",
-    Icon = "panel-right",
+    Icon = "rbxassetid://10734950309",
     Author = "Gd studio",
     Folder = "Survive100dayinsea",
     Transparent = true,
-    User = {
-        Enabled = true,
-        Anonymous = false,
-        Callback = function()
-            print("Profil cliqué")
-        end,
-    },
 })
 
--- [3] Organisation des Sections (Barre latérale)
+-- [3] Navigation latérale (Sections & Tabs)
+local MainGroup = Window:Section({ Title = "Principal", Icon = "rbxassetid://10723342555", Opened = true })
+local TabInfo = MainGroup:Tab({ Title = "INFO", Icon = "rbxassetid://10723344430" })
+local TabMain = MainGroup:Tab({ Title = "MAIN", Icon = "rbxassetid://10723342321" })
 
---- SECTION PRINCIPALE ---
-local MainGroup = Window:Section({
+local BringGroup = Window:Section({ Title = "Bring", Icon = "rbxassetid://10734950153", Opened = false })
+local TabOther = BringGroup:Tab({ Title = "Other", Icon = "rbxassetid://10723343606" })
+local TabAura = BringGroup:Tab({ Title = "Aura", Icon = "rbxassetid://10734949168" })
+local TabMiscs = BringGroup:Tab({ Title = "Miscs", Icon = "rbxassetid://10734897102" })
+local TabFarm = BringGroup:Tab({ Title = "Farm", Icon = "rbxassetid://10723344331" })
+
+local ThirdsGroup = Window:Section({ Title = "Thirds", Icon = "rbxassetid://10734951102", Opened = false })
+local TabAuto = ThirdsGroup:Tab({ Title = "Auto", Icon = "rbxassetid://10723341857" })
+local TabTeleport = ThirdsGroup:Tab({ Title = "Teleport", Icon = "rbxassetid://10734950020" })
+local TabUpdate = ThirdsGroup:Tab({ Title = "UPDATE!", Icon = "rbxassetid://10734950680" })
+local TabSetting = ThirdsGroup:Tab({ Title = "Setting", Icon = "rbxassetid://10734950309" })
+
+-- [4] Remplissage des Sections par Page
+
+-- TAB MAIN
+local MainSect = TabMain:Section({ Title = "Main Section" })
+MainSect:AddGradient(WindUI:Gradient({["0"]={Color=Color3.fromHex("#10b981")},["100"]={Color=Color3.fromHex("#047857")}},{Rotation=90}))
+
+-- TAB BRING
+TabOther:Section({ Title = "Setting Section" })
+TabOther:Section({ Title = "Bring" })
+TabOther:Section({ Title = "Armure" })
+TabOther:Section({ Title = "Other" })
+
+-- TAB MISCS
+TabMiscs:Section({ Title = "Misc Sections" })
+
+-- TAB AURA
+TabAura:Section({ Title = "Settings Sections" })
+TabAura:Section({ Title = "Aura" })
+
+-- TAB FARM
+TabFarm:Section({ Title = "Setting Section" })
+TabFarm:Section({ Title = "Farm" })
+
+-- TAB SETTING
+TabSetting:Section({ Title = "Setting Section" })
+TabSetting:Section({ Title = "Save | Config" })
+
+-- TAB UPDATE
+local UpdateSect = TabUpdate:Section({ Title = "Status" })
+UpdateSect:Paragraph({ Title = "Coming Soon", Content = "De nouvelles fonctionnalités arrivent bientôt dans cette section !" })
+
+-- TAB TELEPORT
+TabTeleport:Section({ Title = "People Section" })
+TabTeleport:Section({ Title = "Place" })
+TabTeleport:Section({ Title = "Other" })
+
+-- TAB AUTO
+TabAuto:Section({ Title = "Setting" })
+TabAuto:Section({ Title = "Auto" })
+
+-- [5] Dialogue final
+Window:Dialog({
+    Title = "Emerald Hub",
+    Content = "Interface chargée avec toutes les sections.",
+    Buttons = {{ Title = "C'est parti !" }}
+})
     Title = "Principal",
     Icon = "cuboid",
     Opened = true,
