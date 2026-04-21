@@ -1,1 +1,10 @@
-[]
+[
+  {
+    "version": "1.2v",
+    "date": "2026-04-21T00:00:00.000Z",
+    "description": "@everyone test",
+    "type": "update",
+    "script": "Garden",
+    "id": "8093d356-54f9-4892-9e1c-dc22d5dd3485"
+  }
+]
